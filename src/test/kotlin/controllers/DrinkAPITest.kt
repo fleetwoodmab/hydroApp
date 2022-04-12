@@ -46,7 +46,7 @@ class DrinkAPITest {
         }
 
     @Nested
-        inner class AddDrink {
+    inner class AddDrink {
         @Test
         fun `adding an entry to a populated list adds to the ArrayList`() {
             val newDrink = Drink(240, "water", "14:37", "12/04/2022")
@@ -65,6 +65,26 @@ class DrinkAPITest {
             assertEquals(1, emptyEntries!!.numberOfEntries())
             assertEquals(newDrink, emptyEntries!!.findEntry(emptyEntries!!.numberOfEntries() - 1))
 
+        }
+    }
+
+    @Nested
+    inner class ListEntries {
+        @Test
+        fun `listAllDrinks returns 'no entry' when the ArrayList is empty`() {
+            assertEquals(0, emptyEntries!!.numberOfEntries())
+            assertTrue(emptyEntries!!.listAllDrinks().contains("No entries created yet"))
+        }
+
+        @Test
+        fun `listAllNotes returns all existing entries when the ArrayList is populated`() {
+            assertEquals(5, populatedEntries!!.numberOfEntries())
+            val entryString = populatedEntries!!.listAllDrinks()
+            assertTrue(entryString.contains("water"))
+            assertTrue(entryString.contains("pepsi"))
+            assertTrue(entryString.contains("milk"))
+            assertTrue(entryString.contains("water"))
+            assertTrue(entryString.contains("tea"))
         }
     }
 }
