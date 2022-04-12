@@ -1,9 +1,7 @@
-import java.util.*
+import utils.ScannerInput
 import java.lang.System.exit
 
-val scanner = Scanner(System.`in`)
-
-fun main(args: Array<String>) {
+fun main() {
     runMenu()
 }
 
