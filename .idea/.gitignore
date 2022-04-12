@@ -1,3 +1,9 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+
+# Generated IntelliJ Sources
+/build
+
+# Generated Gradle Sources
+/.gradle
