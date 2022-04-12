@@ -1,8 +1,11 @@
+import controllers.DrinkAPI
+import models.Drink
 import mu.KotlinLogging
 import utils.ScannerInput
 import java.lang.System.exit
 
 private val logger = KotlinLogging.logger {}
+private val drinkAPI = DrinkAPI()
 
 fun main() {
     runMenu()
@@ -48,13 +51,22 @@ fun runMenu() {
 // ------------ Menu Functions ------------
 
 fun addDrink() {
-    println("addDrink chosen")
-    logger.info { "addDrink() function invoked" }
-}
+        val sizeGlassMl = ScannerInput.readNextInt("How much did you drink (in mL) ? ")
+        val liquidType = ScannerInput.readNextLine("What did you drink ? ")
+        val timeTaken = ScannerInput.readNextLine("At what time ? ")
+        val date = ScannerInput.readNextLine("On what date ? (DD-MM-YYYY) ")
+        val isAdded = drinkAPI.add(Drink(sizeGlassMl, liquidType, timeTaken, date))
+
+        if (isAdded) {
+            println("entry added")
+        } else {
+            println("entry failed")
+        }
+    }
+
 
 fun listAllDrinks() {
-    println("listAllDrinks chosen")
-    logger.info { "listAllDrinks() function invoked" }
+    println(drinkAPI.listAllDrinks())
 }
 
 fun listDrinksPer() {
