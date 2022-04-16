@@ -1,13 +1,15 @@
     import controllers.DrinkAPI
     import models.Drink
     import mu.KotlinLogging
+    import persistence.XMLSerializer
     import utils.ScannerInput
     import utils.ScannerInput.readNextInt
     import utils.ScannerInput.readNextLine
+    import java.io.File
     import java.lang.System.exit
 
     private val logger = KotlinLogging.logger {}
-    private val drinkAPI = DrinkAPI()
+    private val drinkAPI = DrinkAPI(XMLSerializer(File("drinks.xml")))
 
     fun main() {
     runMenu()
@@ -111,13 +113,19 @@
     }
 
     fun save() {
-    println("save chosen")
-    logger.info { "save() function invoked" }
+        try {
+            drinkAPI.store()
+        } catch (e: Exception) {
+            System.err.println("Error writing to file: $e")
+        }
     }
 
     fun load() {
-    println("load chosen")
-    logger.info { "load() function invoked" }
+        try {
+            drinkAPI.load()
+        } catch (e: Exception) {
+            System.err.println("Error reading from file: $e")
+        }
     }
 
     fun exitApp() {

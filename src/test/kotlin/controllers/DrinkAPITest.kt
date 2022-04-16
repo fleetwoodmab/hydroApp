@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import persistence.XMLSerializer
+import java.io.File
 
 class DrinkAPITest {
 
@@ -14,8 +16,8 @@ class DrinkAPITest {
     private var entry3: Drink? = null
     private var entry4: Drink? = null
     private var entry5: Drink? = null
-    private var populatedEntries: DrinkAPI? = DrinkAPI()
-    private var emptyEntries: DrinkAPI? = DrinkAPI()
+    private var populatedEntries: DrinkAPI? = DrinkAPI(XMLSerializer(File("drinks.xml")))
+    private var emptyEntries: DrinkAPI? = DrinkAPI(XMLSerializer(File("drinks.xml")))
 
     @BeforeEach
     fun setup() {
@@ -127,6 +129,47 @@ class DrinkAPITest {
             assertEquals(4, populatedEntries!!.numberOfEntries())
             assertEquals(entry4, populatedEntries!!.deleteDrink(3))
             assertEquals(3, populatedEntries!!.numberOfEntries())
+        }
+    }
+
+    @Nested
+    inner class PersistenceTests {
+
+        @Test
+        fun `saving and loading empty collection in XML`() {
+            // Saving empty drinks.XML file.
+            val savingEntries = DrinkAPI(XMLSerializer(File("drinks.xml")))
+            savingEntries.store()
+
+            //Loading empty file
+            val loadingEntries = DrinkAPI(XMLSerializer(File("drinks.xml")))
+            loadingEntries.load()
+
+            //Comparing saved entries with loaded entries
+            assertEquals(0, savingEntries.numberOfEntries())
+            assertEquals(0, loadingEntries.numberOfEntries())
+            assertEquals(savingEntries.numberOfEntries(), loadingEntries.numberOfEntries())
+        }
+
+        @Test
+        fun `saving and loading a loaded collection in XML prevents loss of data`() {
+            val storingEntries = DrinkAPI(XMLSerializer(File("drinks.xml")))
+            storingEntries.add(entry1!!)
+            storingEntries.add(entry2!!)
+            storingEntries.add(entry3!!)
+            storingEntries.store()
+
+            //Loading file to another collection
+            val loadingEntries = DrinkAPI(XMLSerializer(File("drinks.xml")))
+            loadingEntries.load()
+
+            //Comparing saved entries with loaded entries
+            assertEquals(3, storingEntries.numberOfEntries())
+            assertEquals(3, loadingEntries.numberOfEntries())
+            assertEquals(storingEntries.numberOfEntries(), loadingEntries.numberOfEntries())
+            assertEquals(storingEntries.findEntry(0), loadingEntries.findEntry(0))
+            assertEquals(storingEntries.findEntry(1), loadingEntries.findEntry(1))
+            assertEquals(storingEntries.findEntry(2), loadingEntries.findEntry(2))
         }
     }
 }
