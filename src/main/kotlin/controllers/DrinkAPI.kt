@@ -1,7 +1,9 @@
 package controllers
 import models.Drink
+import persistence.Serializer
 
-class DrinkAPI() {
+class DrinkAPI(serializerType: Serializer) {
+    private var serializer: Serializer = serializerType
 
     private var drinks = ArrayList<Drink>()
 
@@ -58,5 +60,15 @@ class DrinkAPI() {
 
     fun isValidIndex(index: Int) :Boolean{
         return isValidListIndex(index, drinks)
+    }
+
+    @Throws(Exception::class)
+    fun load() {
+        drinks = serializer.read() as ArrayList<Drink>
+    }
+
+    @Throws(Exception::class)
+    fun store() {
+        serializer.write(drinks)
     }
 }
