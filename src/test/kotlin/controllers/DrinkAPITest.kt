@@ -2,8 +2,7 @@ package controllers
 
 import models.Drink
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -85,6 +84,29 @@ class DrinkAPITest {
             assertTrue(entryString.contains("milk"))
             assertTrue(entryString.contains("water"))
             assertTrue(entryString.contains("tea"))
+        }
+    }
+
+    @Nested
+    inner class UpdateDrinks {
+        @Test
+        fun `updating a non-existing entry returns false`(){
+            assertFalse(populatedEntries!!.updateDrink(127, Drink(250, "hot chocolate", "08:59", "11/04/2022")))
+            assertFalse(populatedEntries!!.updateDrink(126, Drink(102, "woter" , "00:58" ,"08/08/2008" )))
+            assertFalse(emptyEntries!!.updateDrink(125, Drink(850, "7up", "01:01", "01/07/2002")))
+        }
+
+        @Test
+        fun `updating an existing entry returns true and updates it`() {
+            //entry exists ?
+            assertEquals(entry3, populatedEntries!!.findEntry(2))
+            assertEquals("milk", populatedEntries!!.findEntry(2)!!.liquidType)
+            assertEquals(240, populatedEntries!!.findEntry(2)!!.sizeGlassMl)
+
+            //successful update ?
+            assertTrue(populatedEntries!!.updateDrink(2, Drink(241, "molk", "09:41", "13/04/2022")))
+            assertEquals(241, populatedEntries!!.findEntry(2)!!.sizeGlassMl)
+            assertEquals("molk", populatedEntries!!.findEntry(4)!!.liquidType)
         }
     }
 }

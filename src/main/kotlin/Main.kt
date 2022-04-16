@@ -1,17 +1,19 @@
-import controllers.DrinkAPI
-import models.Drink
-import mu.KotlinLogging
-import utils.ScannerInput
-import java.lang.System.exit
+    import controllers.DrinkAPI
+    import models.Drink
+    import mu.KotlinLogging
+    import utils.ScannerInput
+    import utils.ScannerInput.readNextInt
+    import utils.ScannerInput.readNextLine
+    import java.lang.System.exit
 
-private val logger = KotlinLogging.logger {}
-private val drinkAPI = DrinkAPI()
+    private val logger = KotlinLogging.logger {}
+    private val drinkAPI = DrinkAPI()
 
-fun main() {
+    fun main() {
     runMenu()
-}
+    }
 
-fun mainMenu() : Int {
+    fun mainMenu() : Int {
     return ScannerInput.readNextInt(""" 
          > ----------------------------------
          > |        Hydration App           |
@@ -29,9 +31,9 @@ fun mainMenu() : Int {
          > |   0) Exit                      |
          > ----------------------------------
          > ==>> """.trimMargin(">"))
-}
+    }
 
-fun runMenu() {
+    fun runMenu() {
     do {
         val option = mainMenu()
         when (option) {
@@ -46,11 +48,11 @@ fun runMenu() {
             else -> System.out.println("Invalid option entered: ${option}")
         }
     } while (true)
-}
+    }
 
-// ------------ Menu Functions ------------
+    // ------------ Menu Functions ------------
 
-fun addDrink() {
+    fun addDrink() {
         val sizeGlassMl = ScannerInput.readNextInt("How much did you drink (in mL) ? ")
         val liquidType = ScannerInput.readNextLine("What did you drink ? ")
         val timeTaken = ScannerInput.readNextLine("At what time ? ")
@@ -65,36 +67,52 @@ fun addDrink() {
     }
 
 
-fun listAllDrinks() {
+    fun listAllDrinks() {
     println(drinkAPI.listAllDrinks())
-}
+    }
 
-fun listDrinksPer() {
+    fun listDrinksPer() {
     println("listDrinksPer chosen")
     logger.info { "listDrinksPer() function invoked" }
-}
+    }
 
-fun updateDrink() {
-    println("updateDrink chosen")
-    logger.info { "updateDrink() function invoked" }
-}
+    fun updateDrink() {
+        listAllDrinks()
+        if (drinkAPI.numberOfEntries() > 0) {
+            val indexToUpdate = readNextInt("Enter index of entry to modify: ")
+            if (drinkAPI.isValidIndex(indexToUpdate)) {
+                val sizeGlassMl = readNextInt("Enter amount drank: ")
+                val liquidType = readNextLine("Enter type of liquid: ")
+                val timeTaken = readNextLine("Enter time glass drank: ")
+                val date = readNextLine("Enter date glass drank: ")
 
-fun deleteDrink() {
+                if (drinkAPI.updateDrink(indexToUpdate, Drink(sizeGlassMl, liquidType, timeTaken, date))){
+                    println("Entry updated")
+                } else {
+                    println("Entry update failed")
+                }
+            } else {
+                println("No entry exists for this index number")
+            }
+        }
+    }
+
+    fun deleteDrink() {
     println("deleteDrink chosen")
     logger.info { "deleteDrink() function invoked" }
-}
+    }
 
-fun save() {
+    fun save() {
     println("save chosen")
     logger.info { "save() function invoked" }
-}
+    }
 
-fun load() {
+    fun load() {
     println("load chosen")
     logger.info { "load() function invoked" }
-}
+    }
 
-fun exitApp() {
+    fun exitApp() {
     println("See you soon!")
     exit(0)
-}
+    }
