@@ -97,9 +97,17 @@
         }
     }
 
-    fun deleteDrink() {
-    println("deleteDrink chosen")
-    logger.info { "deleteDrink() function invoked" }
+    fun deleteDrink(){
+        listAllDrinks()
+        if (drinkAPI.numberOfEntries() > 0) {
+            val indexToDelete = readNextInt("Enter index of entry to delete: ")
+            val entryToDelete = drinkAPI.deleteDrink(indexToDelete)
+            if (entryToDelete != null) {
+                println("Entry deleted")
+            } else {
+                println("Entry --not-- deleted")
+            }
+        }
     }
 
     fun save() {
