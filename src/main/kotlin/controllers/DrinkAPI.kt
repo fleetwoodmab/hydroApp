@@ -35,6 +35,12 @@ class DrinkAPI() {
         }
     }
 
+    fun deleteDrink(indexToDelete: Int): Drink? {
+        return if (isValidListIndex(indexToDelete, drinks)) {
+            drinks.removeAt(indexToDelete)
+        } else null
+    }
+
 // ----- indirect user purposes -----
     fun numberOfEntries(): Int {
         return drinks.size
@@ -51,6 +57,6 @@ class DrinkAPI() {
     }
 
     fun isValidIndex(index: Int) :Boolean{
-        return isValidListIndex(index, drinks);
+        return isValidListIndex(index, drinks)
     }
 }

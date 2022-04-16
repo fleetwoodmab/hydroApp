@@ -88,7 +88,7 @@ class DrinkAPITest {
     }
 
     @Nested
-    inner class UpdateDrinks {
+    inner class UpdateEntries {
         @Test
         fun `updating a non-existing entry returns false`(){
             assertFalse(populatedEntries!!.updateDrink(127, Drink(250, "hot chocolate", "08:59", "11/04/2022")))
@@ -107,6 +107,26 @@ class DrinkAPITest {
             assertTrue(populatedEntries!!.updateDrink(2, Drink(241, "molk", "09:41", "13/04/2022")))
             assertEquals(241, populatedEntries!!.findEntry(2)!!.sizeGlassMl)
             assertEquals("molk", populatedEntries!!.findEntry(4)!!.liquidType)
+        }
+    }
+
+    @Nested
+    inner class DeleteEntries {
+
+        @Test
+        fun `deleting a non-existing entry returns null`() {
+            assertNull(emptyEntries!!.deleteDrink(158))
+            assertNull(populatedEntries!!.deleteDrink(157))
+            assertNull(populatedEntries!!.deleteDrink(156))
+        }
+
+        @Test
+        fun `deleting an existing entry deletes it`() {
+            assertEquals(5, populatedEntries!!.numberOfEntries())
+            assertEquals(entry5, populatedEntries!!.deleteDrink(4))
+            assertEquals(4, populatedEntries!!.numberOfEntries())
+            assertEquals(entry4, populatedEntries!!.deleteDrink(3))
+            assertEquals(3, populatedEntries!!.numberOfEntries())
         }
     }
 }
