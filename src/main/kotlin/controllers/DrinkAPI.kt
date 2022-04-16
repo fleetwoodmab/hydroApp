@@ -21,7 +21,21 @@ class DrinkAPI() {
         }
     }
 
-// ----- test purposes -----
+    fun updateDrink(indexToUpdate: Int, drink: Drink?): Boolean {
+        val selectedEntry = findEntry(indexToUpdate)
+
+        return if ((selectedEntry != null) && (drink != null)) {
+            selectedEntry.sizeGlassMl = drink.sizeGlassMl
+            selectedEntry.liquidType = drink.liquidType
+            selectedEntry.timeTaken = drink.timeTaken
+            selectedEntry.date = drink.date
+            true
+        } else {
+            false
+        }
+    }
+
+// ----- indirect user purposes -----
     fun numberOfEntries(): Int {
         return drinks.size
     }
@@ -34,5 +48,9 @@ class DrinkAPI() {
 
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
+    }
+
+    fun isValidIndex(index: Int) :Boolean{
+        return isValidListIndex(index, drinks);
     }
 }

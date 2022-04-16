@@ -1,12 +1,10 @@
 package models
 
-import java.util.Date
-
 data class Drink(
-    val sizeGlassMl: Int,
-    val liquidType: String,
-    val timeTaken: String,
-    val date: String,
+    var sizeGlassMl: Int,
+    var liquidType: String,
+    var timeTaken: String,
+    var date: String,
               //   val goalAchieved: Boolean,
 ){
 }
