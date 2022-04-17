@@ -23,6 +23,47 @@ class DrinkAPI(serializerType: Serializer) {
         }
     }
 
+    fun listPerDate(date: String): String {
+        return if (drinks.isEmpty()) {
+            "No entries created yet"
+        } else {
+            var entriesPerDate = ""
+            for (i in drinks.indices) {
+                if (drinks[i].date == date) {
+                    entriesPerDate +=
+                        """$i: ${drinks[i]}
+                                """.trimIndent()
+                }
+            }
+            if (entriesPerDate.equals("")) {
+                "No entries with date: $date"
+            } else {
+                entriesPerDate
+            }
+        }.toString()
+
+                }
+
+    fun listPerLiquid(liquid: String): String {
+        return if (drinks.isEmpty()) {
+            "No entries created yet"
+        } else {
+            var entriesPerLiquid = ""
+            for (i in drinks.indices) {
+                if (drinks[i].liquidType == liquid) {
+                    entriesPerLiquid +=
+                        """$i: ${drinks[i]}
+                                """.trimIndent()
+                }
+            }
+            if (entriesPerLiquid.equals("")) {
+                "No entries with liquid type: $liquid"
+            } else {
+                entriesPerLiquid
+            }
+        }
+    }
+
     fun updateDrink(indexToUpdate: Int, drink: Drink?): Boolean {
         val selectedEntry = findEntry(indexToUpdate)
 

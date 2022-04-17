@@ -68,14 +68,38 @@
         }
     }
 
-
     fun listAllDrinks() {
     println(drinkAPI.listAllDrinks())
     }
 
     fun listDrinksPer() {
-    println("listDrinksPer chosen")
-    logger.info { "listDrinksPer() function invoked" }
+        if (drinkAPI.numberOfEntries() > 0) {
+            val option = readNextInt(
+                """
+                  > --------------------------------
+                  > |   1) List entries per date   |
+                  > |   2) List entries per liquid |
+                  > --------------------------------
+         > ==>> """.trimMargin(">"))
+
+            when (option) {
+                1 -> listPerDate();
+                2 -> listPerLiquid();
+                else -> println("Please enter a valid number");
+            }
+        } else {
+            println("There are no entries");
+        }
+    }
+
+    fun listPerDate() {
+        val date = readNextLine("Enter date to search by: ");
+        println(drinkAPI.listPerDate(date))
+    }
+
+    fun listPerLiquid() {
+        val liquid = readNextLine("Enter liquid to search by: ");
+        println(drinkAPI.listPerLiquid(liquid))
     }
 
     fun updateDrink() {
