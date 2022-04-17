@@ -87,6 +87,58 @@ class DrinkAPITest {
             assertTrue(entryString.contains("water"))
             assertTrue(entryString.contains("tea"))
         }
+
+        @Test
+        fun `listPerDate returns 'no entry' when the ArrayList is empty`() {
+            assertEquals(0, emptyEntries!!.numberOfEntries())
+            assertTrue(
+                emptyEntries!!.listPerDate("01/00/00").contains("No entries created yet")
+            )
+        }
+
+        @Test
+        fun `listPerDate returns 'no entry' when no entries with that date exist`() {
+            assertEquals(5, populatedEntries!!.numberOfEntries())
+            val dt = populatedEntries!!.listPerDate("00/00/00")
+            assertTrue(dt.contains("No entries with date: 00/00/00"))
+        }
+
+        @Test
+        fun `listPerDate returns all entries with said date when they exist`() {
+            assertEquals(5, populatedEntries!!.numberOfEntries())
+            val dt = populatedEntries!!.listPerDate("12/04/2022")
+            assertTrue(dt.contains("water"))
+            assertTrue(dt.contains("pepsi"))
+            assertFalse(dt.contains("milk"))
+            assertFalse(dt.contains("10:54"))
+            assertFalse(dt.contains("tea"))
+        }
+
+        @Test
+        fun `listPerLiquid returns 'no entry' when the ArrayList is empty`() {
+            assertEquals(0, emptyEntries!!.numberOfEntries())
+            assertTrue(
+                emptyEntries!!.listPerLiquid("oasis").contains("No entries created yet")
+            )        }
+
+        @Test
+        fun `listPerLiquid returns 'no entry' when no entries with that liquid exist`() {
+            assertEquals(5, populatedEntries!!.numberOfEntries())
+            val dt = populatedEntries!!.listPerLiquid("oasis")
+            assertTrue(dt.contains("No entries with liquid type: oasis"))
+        }
+
+        @Test
+        fun `listPerLiquid returns all entries with said date when they exist`() {
+            assertEquals(5, populatedEntries!!.numberOfEntries())
+            val dt = populatedEntries!!.listPerLiquid("water")
+            assertTrue(dt.contains("14:37"))
+            assertFalse(dt.contains("16:17"))
+            assertFalse(dt.contains("09:41"))
+            assertTrue(dt.contains("10:54"))
+            assertFalse(dt.contains("12:28"))
+        }
+
     }
 
     @Nested
