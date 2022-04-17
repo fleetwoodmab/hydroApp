@@ -1,6 +1,6 @@
-# hydrationApp
+# hydroApp
 
-## What
+## what
 HydroApp is a console app that allows the user to keep track of their liquid ingestion per date and time.
 
 ##  why
@@ -16,6 +16,9 @@ I reccommend you save your entries every time and load them every time, which yo
 It is very helpful to have one glass or bottle that you've measured the content of, that way you don't have to keep weighing your glass everytime.
 For example measuring a soda glass it at its visible line and filling your glass at this level everytime is a good and easy way to be consistent, no problem if its not precise to its microliter.
 You could also use a measuring jug as carafe and calculate the amount drunk if that's your thing.
+
+## possible ameliorations
+- customizing goal
 
 ##  who
 hi, it's me marie-anne and i've based this app on my parents always telling me to drink water (and they're right !)
