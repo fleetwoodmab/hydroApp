@@ -2,12 +2,15 @@ package controllers
 
 import models.Drink
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import persistence.XMLSerializer
 import java.io.File
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class DrinkAPITest {
 
@@ -113,6 +116,30 @@ class DrinkAPITest {
         }
 
         @Test
+        fun `isGoalAchievedOnDay returns 'no entry' when the ArrayList is empty`() {
+            assertEquals(0, emptyEntries!!.numberOfEntries())
+            assertTrue(
+                emptyEntries!!.isGoalAchievedOnDay("02/02/2022").contains("No entries created yet")
+            )
+        }
+
+        @Test
+        fun `isGoalAchievedOnDay returns 'no entry' when no entries with that date exist`() {
+            assertEquals(5, populatedEntries!!.numberOfEntries())
+            val dt = populatedEntries!!.isGoalAchievedOnDay("00/00/00")
+            assertTrue(dt.contains("No entries with date: 00/00/00"))
+        }
+
+        @Test
+        fun `isGoalAchievedOnDay returns where goal achieved with said date when it exists`() {
+            val newDrink = Drink(505, "water", "14:37", "13/04/2022")
+            assertTrue(populatedEntries!!.add(newDrink))
+            val dt = populatedEntries!!.isGoalAchievedOnDay("13/04/2022")
+            assertEquals(6, populatedEntries!!.numberOfEntries())
+            assertTrue(dt.contains("You've achieved your goal on: 13/04/2022"))
+        }
+
+        @Test
         fun `listPerLiquid returns 'no entry' when the ArrayList is empty`() {
             assertEquals(0, emptyEntries!!.numberOfEntries())
             assertTrue(
@@ -128,7 +155,7 @@ class DrinkAPITest {
         }
 
         @Test
-        fun `listPerLiquid returns all entries with said date when they exist`() {
+        fun `listPerLiquid returns all entries with said liquid when they exist`() {
             assertEquals(5, populatedEntries!!.numberOfEntries())
             val dt = populatedEntries!!.listPerLiquid("water")
             assertTrue(dt.contains("14:37"))
@@ -137,6 +164,10 @@ class DrinkAPITest {
             assertTrue(dt.contains("10:54"))
             assertFalse(dt.contains("12:28"))
         }
+
+
+
+
     }
 
     @Nested

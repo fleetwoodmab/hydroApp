@@ -43,6 +43,33 @@ class DrinkAPI(serializerType: Serializer) {
         }.toString()
     }
 
+    fun isGoalAchievedOnDay(date: String): String {
+        var amount = 0
+        var dayChosen = drinks.filter {
+            drink ->  drink.date == date
+        }
+
+        return if (drinks.isEmpty()) {
+            "No entries created yet"
+        }
+        else if (dayChosen.equals("")) {
+            "No entries with date: $date"
+        }
+        else {
+            for (i in dayChosen.indices) {
+                amount += dayChosen[i].sizeGlassMl
+            }
+
+            if (amount >= 1200) {
+                "You've achieved your goal on: $date"
+            }
+            else {
+                "You didn't achieve your goal on $date"
+            }
+        }
+
+    }
+
     fun listPerLiquid(liquid: String): String {
         return if (drinks.isEmpty()) {
             "No entries created yet"
@@ -62,6 +89,8 @@ class DrinkAPI(serializerType: Serializer) {
             }
         }
     }
+
+
 
     fun updateDrink(indexToUpdate: Int, drink: Drink?): Boolean {
         val selectedEntry = findEntry(indexToUpdate)
