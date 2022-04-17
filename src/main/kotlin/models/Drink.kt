@@ -5,8 +5,5 @@ data class Drink(
     var liquidType: String,
     var timeTaken: String,
     var date: String,
-              //   val goalAchieved: Boolean,
-){
-}
-
-
+    //   val goalAchieved: Boolean,
+)
