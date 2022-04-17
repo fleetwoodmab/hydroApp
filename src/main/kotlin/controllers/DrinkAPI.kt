@@ -17,7 +17,7 @@ class DrinkAPI(serializerType: Serializer) {
         } else {
             var allEntries = ""
             for (i in drinks.indices) {
-                allEntries += "${i}: ${drinks[i]} \n"
+                allEntries += "$i: ${drinks[i]} \n"
             }
             allEntries
         }
@@ -32,7 +32,7 @@ class DrinkAPI(serializerType: Serializer) {
                 if (drinks[i].date == date) {
                     entriesPerDate +=
                         """$i: ${drinks[i]}
-                                """.trimIndent()
+                        """.trimIndent()
                 }
             }
             if (entriesPerDate.equals("")) {
@@ -41,8 +41,7 @@ class DrinkAPI(serializerType: Serializer) {
                 entriesPerDate
             }
         }.toString()
-
-                }
+    }
 
     fun listPerLiquid(liquid: String): String {
         return if (drinks.isEmpty()) {
@@ -53,7 +52,7 @@ class DrinkAPI(serializerType: Serializer) {
                 if (drinks[i].liquidType == liquid) {
                     entriesPerLiquid +=
                         """$i: ${drinks[i]}
-                                """.trimIndent()
+                        """.trimIndent()
                 }
             }
             if (entriesPerLiquid.equals("")) {
@@ -99,7 +98,7 @@ class DrinkAPI(serializerType: Serializer) {
         return (index >= 0 && index < list.size)
     }
 
-    fun isValidIndex(index: Int) :Boolean{
+    fun isValidIndex(index: Int): Boolean {
         return isValidListIndex(index, drinks)
     }
 

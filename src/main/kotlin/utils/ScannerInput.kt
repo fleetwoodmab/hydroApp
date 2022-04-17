@@ -1,6 +1,5 @@
 package utils
 
-import java.lang.NumberFormatException
 import java.util.*
 
 /**
@@ -76,6 +75,4 @@ object ScannerInput {
         print(prompt)
         return Scanner(System.`in`).next()[0]
     }
-
-
 }

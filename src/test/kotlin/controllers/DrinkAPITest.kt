@@ -27,7 +27,7 @@ class DrinkAPITest {
         entry4 = Drink(240, "water", "10:54", "13/04/2022")
         entry5 = Drink(220, "tea", "12:28", "13/04/2022")
 
-        //adding 5 drink entries to DrinkApi
+        // adding 5 drink entries to DrinkApi
         populatedEntries!!.add(entry1!!)
         populatedEntries!!.add(entry2!!)
         populatedEntries!!.add(entry3!!)
@@ -35,16 +35,16 @@ class DrinkAPITest {
         populatedEntries!!.add(entry5!!)
     }
 
-        @AfterEach
-        fun tearDown() {
-            entry1 = null
-            entry2 = null
-            entry3 = null
-            entry4 = null
-            entry5 = null
-            populatedEntries = null
-            emptyEntries = null
-        }
+    @AfterEach
+    fun tearDown() {
+        entry1 = null
+        entry2 = null
+        entry3 = null
+        entry4 = null
+        entry5 = null
+        populatedEntries = null
+        emptyEntries = null
+    }
 
     @Nested
     inner class AddDrink {
@@ -55,7 +55,6 @@ class DrinkAPITest {
             assertTrue(populatedEntries!!.add(newDrink))
             assertEquals(6, populatedEntries!!.numberOfEntries())
             assertEquals(newDrink, populatedEntries!!.findEntry(populatedEntries!!.numberOfEntries() - 1))
-
         }
 
         @Test
@@ -65,7 +64,6 @@ class DrinkAPITest {
             assertTrue(emptyEntries!!.add(newDrink))
             assertEquals(1, emptyEntries!!.numberOfEntries())
             assertEquals(newDrink, emptyEntries!!.findEntry(emptyEntries!!.numberOfEntries() - 1))
-
         }
     }
 
@@ -119,7 +117,8 @@ class DrinkAPITest {
             assertEquals(0, emptyEntries!!.numberOfEntries())
             assertTrue(
                 emptyEntries!!.listPerLiquid("oasis").contains("No entries created yet")
-            )        }
+            )
+        }
 
         @Test
         fun `listPerLiquid returns 'no entry' when no entries with that liquid exist`() {
@@ -138,29 +137,28 @@ class DrinkAPITest {
             assertTrue(dt.contains("10:54"))
             assertFalse(dt.contains("12:28"))
         }
-
     }
 
     @Nested
     inner class UpdateEntries {
         @Test
-        fun `updating a non-existing entry returns false`(){
+        fun `updating a non-existing entry returns false`() {
             assertFalse(populatedEntries!!.updateDrink(127, Drink(250, "hot chocolate", "08:59", "11/04/2022")))
-            assertFalse(populatedEntries!!.updateDrink(126, Drink(102, "woter" , "00:58" ,"08/08/2008" )))
+            assertFalse(populatedEntries!!.updateDrink(126, Drink(102, "woter", "00:58", "08/08/2008")))
             assertFalse(emptyEntries!!.updateDrink(125, Drink(850, "7up", "01:01", "01/07/2002")))
         }
 
         @Test
         fun `updating an existing entry returns true and updates it`() {
-            //entry exists ?
+            // entry exists ?
             assertEquals(entry3, populatedEntries!!.findEntry(2))
             assertEquals("milk", populatedEntries!!.findEntry(2)!!.liquidType)
             assertEquals(240, populatedEntries!!.findEntry(2)!!.sizeGlassMl)
 
-            //successful update ?
+            // successful update ?
             assertTrue(populatedEntries!!.updateDrink(2, Drink(241, "molk", "09:41", "13/04/2022")))
             assertEquals(241, populatedEntries!!.findEntry(2)!!.sizeGlassMl)
-            assertEquals("molk", populatedEntries!!.findEntry(4)!!.liquidType)
+            assertEquals("molk", populatedEntries!!.findEntry(2)!!.liquidType)
         }
     }
 
@@ -193,11 +191,11 @@ class DrinkAPITest {
             val savingEntries = DrinkAPI(XMLSerializer(File("drinks.xml")))
             savingEntries.store()
 
-            //Loading empty file
+            // Loading empty file
             val loadingEntries = DrinkAPI(XMLSerializer(File("drinks.xml")))
             loadingEntries.load()
 
-            //Comparing saved entries with loaded entries
+            // Comparing saved entries with loaded entries
             assertEquals(0, savingEntries.numberOfEntries())
             assertEquals(0, loadingEntries.numberOfEntries())
             assertEquals(savingEntries.numberOfEntries(), loadingEntries.numberOfEntries())
@@ -211,11 +209,11 @@ class DrinkAPITest {
             storingEntries.add(entry3!!)
             storingEntries.store()
 
-            //Loading file to another collection
+            // Loading file to another collection
             val loadingEntries = DrinkAPI(XMLSerializer(File("drinks.xml")))
             loadingEntries.load()
 
-            //Comparing saved entries with loaded entries
+            // Comparing saved entries with loaded entries
             assertEquals(3, storingEntries.numberOfEntries())
             assertEquals(3, loadingEntries.numberOfEntries())
             assertEquals(storingEntries.numberOfEntries(), loadingEntries.numberOfEntries())
