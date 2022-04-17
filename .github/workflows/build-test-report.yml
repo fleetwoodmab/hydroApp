@@ -25,13 +25,29 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs gradle build task but without JUnit tests
-      - name: run gradle build
-        run: ./gradlew build -x test
+      # Runs gradle's test task
+      - name: test with gradle
+        run: ./gradlew test --tests "*"
+      
+      # builds zip file with JUnit tests report inside
+      - name: archive test report
+        uses: actions/upload-artifact@v2
+        with: 
+          name: test report
+          path: build/reports/tests/test
+          
+      # builds a zip file with JUnit code coverage report inside
+      - name: archive coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: code coverage report
+          path: builds/reports/jacoco/test/html
+      
+      
         
       # builds fat jar file with gradle's dependencies
       - name: archive jar with dependencies
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
          name: jar with dependencies
          path: build/libs
