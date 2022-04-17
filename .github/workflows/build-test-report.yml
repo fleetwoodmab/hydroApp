@@ -19,6 +19,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
+      #makes gradlew executable
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      
       # runs gradle build tast without tests
       - name: Build with Gradle
         run: ./gradlew build -x test
