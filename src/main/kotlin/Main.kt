@@ -66,9 +66,9 @@ fun addDrink() {
     val isAdded = drinkAPI.add(Drink(sizeGlassMl, liquidType, timeTaken, date))
 
     if (isAdded) {
-        println("entry added")
+        println("-- Entry added -- ")
     } else {
-        println("entry failed")
+        println("-- Adding entry failed --")
     }
 }
 
@@ -83,7 +83,6 @@ fun listDrinksPer() {
                   > -----------------------------------------
                   > |   1) List entries per date             |
                   > |   2) List entries per liquid           |
-                  > |   3) List days where goal was achieved |
                   > -----------------------------------------
          > ==>> """.trimMargin(">")
         )
@@ -99,7 +98,7 @@ fun listDrinksPer() {
 }
 
 fun listPerDate() {
-    val date = readNextLine("Enter date to search by: ")
+    val date = readNextLine("Enter date to search by (DD-MM-YYYY): ")
     println(drinkAPI.listPerDate(date))
 }
 
@@ -109,7 +108,7 @@ fun listPerLiquid() {
 }
 
 fun isGoalAchievedOnDay() {
-    val date = readNextLine("Enter date to search by: ")
+    val date = readNextLine("Enter date to search by (DD-MM-YYYY): ")
     println(drinkAPI.isGoalAchievedOnDay(date))
 }
 
@@ -124,9 +123,9 @@ fun updateDrink() {
             val date = readNextLine("Enter date glass drank: ")
 
             if (drinkAPI.updateDrink(indexToUpdate, Drink(sizeGlassMl, liquidType, timeTaken, date))) {
-                println("Entry update successful")
+                println("-- Entry update successful --")
             } else {
-                println("Entry update failed")
+                println("-- Updating entry failed --")
             }
         } else {
             println("No entry exists for this index number")
@@ -140,9 +139,9 @@ fun deleteDrink() {
         val indexToDelete = readNextInt("Enter index of entry to delete: ")
         val entryToDelete = drinkAPI.deleteDrink(indexToDelete)
         if (entryToDelete != null) {
-            println("Entry deleted")
+            println("-- Entry deleted --")
         } else {
-            println("Entry --not-- deleted")
+            println("-- Entry _not_ deleted --")
         }
     }
 }
