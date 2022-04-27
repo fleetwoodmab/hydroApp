@@ -35,7 +35,7 @@ class DrinkAPI(serializerType: Serializer) {
                         """.trimIndent()
                 }
             }
-            if (entriesPerDate.equals("")) {
+            if (entriesPerDate == "") {
                 "No entries with date: $date"
             } else {
                 entriesPerDate
@@ -45,15 +45,13 @@ class DrinkAPI(serializerType: Serializer) {
 
     fun isGoalAchievedOnDay(date: String): String {
         var amount = 0
-        var dayChosen = drinks.filter {
-            drink ->  drink.date == date
+        val dayChosen = drinks.filter {
+            drink ->
+            drink.date == date
         }
 
         return if (drinks.isEmpty()) {
             "No entries created yet"
-        }
-        else if (dayChosen.equals("")) {
-            "No entries with date: $date"
         }
         else {
             for (i in dayChosen.indices) {
@@ -62,12 +60,10 @@ class DrinkAPI(serializerType: Serializer) {
 
             if (amount >= 1200) {
                 "You've achieved your goal on: $date"
-            }
-            else {
-                "You didn't achieve your goal on $date"
+            } else {
+                "You didn't achieve your goal on: $date"
             }
         }
-
     }
 
     fun listPerLiquid(liquid: String): String {
@@ -82,15 +78,13 @@ class DrinkAPI(serializerType: Serializer) {
                         """.trimIndent()
                 }
             }
-            if (entriesPerLiquid.equals("")) {
+            if (entriesPerLiquid == "") {
                 "No entries with liquid type: $liquid"
             } else {
                 entriesPerLiquid
             }
         }
     }
-
-
 
     fun updateDrink(indexToUpdate: Int, drink: Drink?): Boolean {
         val selectedEntry = findEntry(indexToUpdate)

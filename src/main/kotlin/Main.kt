@@ -1,13 +1,15 @@
+
 import controllers.DrinkAPI
 import models.Drink
-import persistence.XMLSerializer
+import persistence.JSONSerializer
 import utils.ScannerInput
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import java.io.File
-import java.lang.System.exit
+import kotlin.system.exitProcess
 
-private val drinkAPI = DrinkAPI(XMLSerializer(File("drinks.xml")))
+//private val drinkAPI = DrinkAPI(XMLSerializer(File("drinks.xml")))
+private val drinkAPI= DrinkAPI(JSONSerializer(File("drinks.json")))
 
 fun main() {
     runMenu()
@@ -17,14 +19,15 @@ fun mainMenu(): Int {
     return ScannerInput.readNextInt(
         """ 
          > ----------------------------------
-         > |        Hydration App           |
+         > |        HydroApp                |
          > ----------------------------------
          > | Menu                           |
          > |   1) Add a drink               |
          > |   2) List all entries          |
          > |   3) List entries per...       |
-         > |   4) Update entry              |
-         > |   5) Delete an entry           |
+         > |   4) Goal achieved on (day)?   |
+         > |   5) Update entry              |
+         > |   6) Delete an entry           |
          > |               
          > |   10) Save drinks collection   |
          > |   11) Load drinks collection   |
@@ -42,12 +45,13 @@ fun runMenu() {
             1 -> addDrink()
             2 -> listAllDrinks()
             3 -> listDrinksPer()
-            4 -> updateDrink()
-            5 -> deleteDrink()
+            4 -> isGoalAchievedOnDay()
+            5 -> updateDrink()
+            6 -> deleteDrink()
             10 -> save()
             11 -> load()
             0 -> exitApp()
-            else -> System.out.println("Invalid option entered: $option")
+            else -> println("Invalid option entered: $option")
         }
     } while (true)
 }
@@ -57,14 +61,14 @@ fun runMenu() {
 fun addDrink() {
     val sizeGlassMl = ScannerInput.readNextInt("How much did you drink (in mL) ? ")
     val liquidType = ScannerInput.readNextLine("What did you drink ? ")
-    val timeTaken = ScannerInput.readNextLine("At what time ? ")
+    val timeTaken = ScannerInput.readNextLine("At what time ? (hh:mm) ")
     val date = ScannerInput.readNextLine("On what date ? (DD-MM-YYYY) ")
     val isAdded = drinkAPI.add(Drink(sizeGlassMl, liquidType, timeTaken, date))
 
     if (isAdded) {
-        println("entry added")
+        println("-- Entry added -- ")
     } else {
-        println("entry failed")
+        println("-- Adding entry failed --")
     }
 }
 
@@ -79,7 +83,6 @@ fun listDrinksPer() {
                   > -----------------------------------------
                   > |   1) List entries per date             |
                   > |   2) List entries per liquid           |
-                  > |   3) List days where goal was achieved |
                   > -----------------------------------------
          > ==>> """.trimMargin(">")
         )
@@ -87,7 +90,6 @@ fun listDrinksPer() {
         when (option) {
             1 -> listPerDate()
             2 -> listPerLiquid()
-            3 -> isGoalAchievedOnDay()
             else -> println("Please enter a valid number")
         }
     } else {
@@ -96,7 +98,7 @@ fun listDrinksPer() {
 }
 
 fun listPerDate() {
-    val date = readNextLine("Enter date to search by: ")
+    val date = readNextLine("Enter date to search by (DD-MM-YYYY): ")
     println(drinkAPI.listPerDate(date))
 }
 
@@ -106,7 +108,7 @@ fun listPerLiquid() {
 }
 
 fun isGoalAchievedOnDay() {
-    val date = readNextLine("Enter date to search by: ")
+    val date = readNextLine("Enter date to search by (DD-MM-YYYY): ")
     println(drinkAPI.isGoalAchievedOnDay(date))
 }
 
@@ -121,9 +123,9 @@ fun updateDrink() {
             val date = readNextLine("Enter date glass drank: ")
 
             if (drinkAPI.updateDrink(indexToUpdate, Drink(sizeGlassMl, liquidType, timeTaken, date))) {
-                println("Entry updated")
+                println("-- Entry update successful --")
             } else {
-                println("Entry update failed")
+                println("-- Updating entry failed --")
             }
         } else {
             println("No entry exists for this index number")
@@ -137,9 +139,9 @@ fun deleteDrink() {
         val indexToDelete = readNextInt("Enter index of entry to delete: ")
         val entryToDelete = drinkAPI.deleteDrink(indexToDelete)
         if (entryToDelete != null) {
-            println("Entry deleted")
+            println("-- Entry deleted --")
         } else {
-            println("Entry --not-- deleted")
+            println("-- Entry _not_ deleted --")
         }
     }
 }
@@ -162,5 +164,5 @@ fun load() {
 
 fun exitApp() {
     println("See you soon!")
-    exit(0)
+    exitProcess(0)
 }

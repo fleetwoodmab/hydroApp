@@ -23,8 +23,9 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:2.1.21")
     implementation("org.slf4j:slf4j-simple:1.7.36")
     implementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    // dependency for XML
-    implementation("com.thoughtworks.xstream:xstream:1.4.19")
+    // For Streaming to XML and JSON
+    implementation("com.thoughtworks.xstream:xstream:1.4.18")
+    implementation("org.codehaus.jettison:jettison:1.4.1")
     // generating Dokka Site from KDoc
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.10")
 }
@@ -49,5 +50,3 @@ tasks.jar {
         configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
     })
 }
-
-
