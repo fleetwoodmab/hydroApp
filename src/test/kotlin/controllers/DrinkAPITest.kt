@@ -116,30 +116,6 @@ class DrinkAPITest {
         }
 
         @Test
-        fun `isGoalAchievedOnDay returns 'no entry' when the ArrayList is empty`() {
-            assertEquals(0, emptyEntries!!.numberOfEntries())
-            assertTrue(
-                emptyEntries!!.isGoalAchievedOnDay("02/02/2022").contains("No entries created yet")
-            )
-        }
-
-        @Test
-        fun `isGoalAchievedOnDay returns 'no entry' when no entries with that date exist`() {
-            assertEquals(5, populatedEntries!!.numberOfEntries())
-            val dt = populatedEntries!!.isGoalAchievedOnDay("00/00/00")
-            assertTrue(dt.contains("No entries with date: 00/00/00"))
-        }
-
-        @Test
-        fun `isGoalAchievedOnDay returns where goal achieved with said date when it exists`() {
-            val newDrink = Drink(505, "water", "14:37", "13/04/2022")
-            assertTrue(populatedEntries!!.add(newDrink))
-            val dt = populatedEntries!!.isGoalAchievedOnDay("13/04/2022")
-            assertEquals(6, populatedEntries!!.numberOfEntries())
-            assertTrue(dt.contains("You've achieved your goal on: 13/04/2022"))
-        }
-
-        @Test
         fun `listPerLiquid returns 'no entry' when the ArrayList is empty`() {
             assertEquals(0, emptyEntries!!.numberOfEntries())
             assertTrue(
@@ -163,6 +139,41 @@ class DrinkAPITest {
             assertFalse(dt.contains("09:41"))
             assertTrue(dt.contains("10:54"))
             assertFalse(dt.contains("12:28"))
+        }
+    }
+
+    @Nested
+    inner class Goal {
+
+        @Test
+        fun `isGoalAchievedOnDay returns 'no entry' when the ArrayList is empty`() {
+            assertEquals(0, emptyEntries!!.numberOfEntries())
+            assertTrue(
+                emptyEntries!!.isGoalAchievedOnDay("02/02/2022").contains("No entries created yet")
+            )
+        }
+
+        @Test
+        fun `isGoalAchievedOnDay returns 'not achieved' when no entries with that date exist`() {
+            assertEquals(5, populatedEntries!!.numberOfEntries())
+            val dt = populatedEntries!!.isGoalAchievedOnDay("99/99/9999")
+            assertTrue(dt.contains("You didn't achieve your goal on: 99/99/9999"))
+        }
+
+        @Test
+        fun `isGoalAchievedOnDay returns 'not achieved' when goal was not achieved on date chosen`() {
+            assertEquals(5, populatedEntries!!.numberOfEntries())
+            val dt = populatedEntries!!.isGoalAchievedOnDay("12/04/2022")
+            assertTrue(dt.contains("You didn't achieve your goal on: 12/04/2022"))
+        }
+
+        @Test
+        fun `isGoalAchievedOnDay returns where goal achieved with said date when it exists`() {
+            val newDrink = Drink(505, "water", "14:37", "13/04/2022")
+            assertTrue(populatedEntries!!.add(newDrink))
+            val dt = populatedEntries!!.isGoalAchievedOnDay("13/04/2022")
+            assertEquals(6, populatedEntries!!.numberOfEntries())
+            assertTrue(dt.contains("You've achieved your goal on: 13/04/2022"))
         }
     }
 
@@ -238,6 +249,43 @@ class DrinkAPITest {
 
             // Loading file to another collection
             val loadingEntries = DrinkAPI(XMLSerializer(File("drinks.xml")))
+            loadingEntries.load()
+
+            // Comparing saved entries with loaded entries
+            assertEquals(3, storingEntries.numberOfEntries())
+            assertEquals(3, loadingEntries.numberOfEntries())
+            assertEquals(storingEntries.numberOfEntries(), loadingEntries.numberOfEntries())
+            assertEquals(storingEntries.findEntry(0), loadingEntries.findEntry(0))
+            assertEquals(storingEntries.findEntry(1), loadingEntries.findEntry(1))
+            assertEquals(storingEntries.findEntry(2), loadingEntries.findEntry(2))
+        }
+
+        @Test
+        fun `saving and loading empty collection in JSON`() {
+            // Saving empty drinks.XML file.
+            val savingEntries = DrinkAPI(XMLSerializer(File("drinks.json")))
+            savingEntries.store()
+
+            // Loading empty file
+            val loadingEntries = DrinkAPI(XMLSerializer(File("drinks.json")))
+            loadingEntries.load()
+
+            // Comparing saved entries with loaded entries
+            assertEquals(0, savingEntries.numberOfEntries())
+            assertEquals(0, loadingEntries.numberOfEntries())
+            assertEquals(savingEntries.numberOfEntries(), loadingEntries.numberOfEntries())
+        }
+
+        @Test
+        fun `saving and loading a loaded collection in JSON prevents loss of data`() {
+            val storingEntries = DrinkAPI(XMLSerializer(File("drinks.json")))
+            storingEntries.add(entry1!!)
+            storingEntries.add(entry2!!)
+            storingEntries.add(entry3!!)
+            storingEntries.store()
+
+            // Loading file to another collection
+            val loadingEntries = DrinkAPI(XMLSerializer(File("drinks.json")))
             loadingEntries.load()
 
             // Comparing saved entries with loaded entries

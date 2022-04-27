@@ -52,9 +52,8 @@ class DrinkAPI(serializerType: Serializer) {
 
         return if (drinks.isEmpty()) {
             "No entries created yet"
-        } else if (dayChosen.equals("")) {
-            "No entries with date: $date"
-        } else {
+        }
+        else {
             for (i in dayChosen.indices) {
                 amount += dayChosen[i].sizeGlassMl
             }
@@ -62,7 +61,7 @@ class DrinkAPI(serializerType: Serializer) {
             if (amount >= 1200) {
                 "You've achieved your goal on: $date"
             } else {
-                "You didn't achieve your goal on $date"
+                "You didn't achieve your goal on: $date"
             }
         }
     }
