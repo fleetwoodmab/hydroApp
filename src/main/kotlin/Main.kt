@@ -1,3 +1,4 @@
+
 import controllers.DrinkAPI
 import models.Drink
 import persistence.XMLSerializer
@@ -5,7 +6,7 @@ import utils.ScannerInput
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import java.io.File
-import java.lang.System.exit
+import kotlin.system.exitProcess
 
 private val drinkAPI = DrinkAPI(XMLSerializer(File("drinks.xml")))
 
@@ -17,14 +18,15 @@ fun mainMenu(): Int {
     return ScannerInput.readNextInt(
         """ 
          > ----------------------------------
-         > |        Hydration App           |
+         > |        HydroApp                |
          > ----------------------------------
          > | Menu                           |
          > |   1) Add a drink               |
          > |   2) List all entries          |
          > |   3) List entries per...       |
-         > |   4) Update entry              |
-         > |   5) Delete an entry           |
+         > |   4) Goal achieved on (day)?   |
+         > |   5) Update entry              |
+         > |   6) Delete an entry           |
          > |               
          > |   10) Save drinks collection   |
          > |   11) Load drinks collection   |
@@ -42,12 +44,13 @@ fun runMenu() {
             1 -> addDrink()
             2 -> listAllDrinks()
             3 -> listDrinksPer()
-            4 -> updateDrink()
-            5 -> deleteDrink()
+            4 -> isGoalAchievedOnDay()
+            5 -> updateDrink()
+            6 -> deleteDrink()
             10 -> save()
             11 -> load()
             0 -> exitApp()
-            else -> System.out.println("Invalid option entered: $option")
+            else -> println("Invalid option entered: $option")
         }
     } while (true)
 }
@@ -57,7 +60,7 @@ fun runMenu() {
 fun addDrink() {
     val sizeGlassMl = ScannerInput.readNextInt("How much did you drink (in mL) ? ")
     val liquidType = ScannerInput.readNextLine("What did you drink ? ")
-    val timeTaken = ScannerInput.readNextLine("At what time ? ")
+    val timeTaken = ScannerInput.readNextLine("At what time ? (hh:mm) ")
     val date = ScannerInput.readNextLine("On what date ? (DD-MM-YYYY) ")
     val isAdded = drinkAPI.add(Drink(sizeGlassMl, liquidType, timeTaken, date))
 
@@ -87,7 +90,6 @@ fun listDrinksPer() {
         when (option) {
             1 -> listPerDate()
             2 -> listPerLiquid()
-            3 -> isGoalAchievedOnDay()
             else -> println("Please enter a valid number")
         }
     } else {
@@ -121,7 +123,7 @@ fun updateDrink() {
             val date = readNextLine("Enter date glass drank: ")
 
             if (drinkAPI.updateDrink(indexToUpdate, Drink(sizeGlassMl, liquidType, timeTaken, date))) {
-                println("Entry updated")
+                println("Entry update successful")
             } else {
                 println("Entry update failed")
             }
@@ -162,5 +164,5 @@ fun load() {
 
 fun exitApp() {
     println("See you soon!")
-    exit(0)
+    exitProcess(0)
 }
