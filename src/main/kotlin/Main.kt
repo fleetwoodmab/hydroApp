@@ -1,14 +1,15 @@
 
 import controllers.DrinkAPI
 import models.Drink
-import persistence.XMLSerializer
+import persistence.JSONSerializer
 import utils.ScannerInput
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import java.io.File
 import kotlin.system.exitProcess
 
-private val drinkAPI = DrinkAPI(XMLSerializer(File("drinks.xml")))
+//private val drinkAPI = DrinkAPI(XMLSerializer(File("drinks.xml")))
+private val drinkAPI= DrinkAPI(JSONSerializer(File("drinks.json")))
 
 fun main() {
     runMenu()
