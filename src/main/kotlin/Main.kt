@@ -60,7 +60,7 @@ fun runMenu() {
 
 fun addDrink() {
     val sizeGlassMl = ScannerInput.readNextInt("How much did you drink (in mL) ? ")
-    val liquidType = ScannerInput.readNextLine("What did you drink ? ")
+    val liquidType = ScannerInput.readNextLine("What did you drink ? ").lowercase()
     val timeTaken = ScannerInput.readNextLine("At what time ? (hh:mm) ")
     val date = ScannerInput.readNextLine("On what date ? (DD-MM-YYYY) ")
     val isAdded = drinkAPI.add(Drink(sizeGlassMl, liquidType, timeTaken, date))
@@ -103,7 +103,7 @@ fun listPerDate() {
 }
 
 fun listPerLiquid() {
-    val liquid = readNextLine("Enter liquid to search by: ")
+    val liquid = readNextLine("Enter liquid to search by: ").lowercase()
     println(drinkAPI.listPerLiquid(liquid))
 }
 

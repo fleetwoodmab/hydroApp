@@ -1,6 +1,7 @@
 package controllers
 import models.Drink
 import persistence.Serializer
+import utils.Utilities.isValidListIndex
 
 class DrinkAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
@@ -115,10 +116,6 @@ class DrinkAPI(serializerType: Serializer) {
         return if (isValidListIndex(index, drinks)) {
             drinks[index]
         } else null
-    }
-
-    fun isValidListIndex(index: Int, list: List<Any>): Boolean {
-        return (index >= 0 && index < list.size)
     }
 
     fun isValidIndex(index: Int): Boolean {
